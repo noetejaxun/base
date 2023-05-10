@@ -1,11 +1,9 @@
 const express = require('express');
 
-const UserService = require('./../services/user.service');
-const validatorHandler = require('./../middlewares/validator.handler');
-const { updateUserSchema, createUserSchema, getUserSchema } = require('./../schemas/user.schema');
+const PersonaService = require('./../services/personas.service');
 
 const router = express.Router();
-const service = new UserService();
+const service = new PersonaService();
 
 router.get('/:db', async (req, res, next) => {
   try {
@@ -18,7 +16,6 @@ router.get('/:db', async (req, res, next) => {
 });
 
 router.get('/:db/:id',
-  validatorHandler(getUserSchema, 'params'),
   async (req, res, next) => {
     try {
       const { db, id } = req.params;
@@ -31,7 +28,6 @@ router.get('/:db/:id',
 );
 
 router.post('/:db',
-  validatorHandler(createUserSchema, 'body'),
   async (req, res, next) => {
     try {
       const { db } = req.params;
@@ -45,8 +41,6 @@ router.post('/:db',
 );
 
 router.patch('/:db/:id',
-  validatorHandler(getUserSchema, 'params'),
-  validatorHandler(updateUserSchema, 'body'),
   async (req, res, next) => {
     try {
       const { db, id } = req.params;
@@ -60,7 +54,6 @@ router.patch('/:db/:id',
 );
 
 router.delete('/:db/:id',
-  validatorHandler(getUserSchema, 'params'),
   async (req, res, next) => {
     try {
       const { db, id } = req.params;

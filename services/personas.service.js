@@ -4,7 +4,7 @@ let db = require('../libs/sequelize');
 let models = db.db.models;
 const { setDB } = require('../db/setupDB');
 
-class UserService {
+class PersonaService {
   constructor() {
   }
 
@@ -16,38 +16,38 @@ class UserService {
 
   async create(db, data) {
     this.setDataBase(db);
-    const newUser = await models.User.create(data);
+    const newUser = await models.Persona.create(data);
     return newUser;
   }
 
   async find(db) {
     this.setDataBase(db);
-    const data = await models.User.findAll();
+    const data = await models.Persona.findAll();
     return data;
   }
 
   async findOne(db, id) {
     this.setDataBase(db);
-    const user = await models.User.findByPk(id);
-    if (!user) {
+    const persona = await models.Persona.findByPk(id);
+    if (!persona) {
       throw boom.notFound('user not found');
     }
-    return user;
+    return persona;
   }
 
   async update(db, id, changes) {
     this.setDataBase(db);
-    const user = await this.findOne(db, id);
-    const response = user.update(changes);
+    const persona = await this.findOne(db, id);
+    const response = persona.update(changes);
     return response;
   }
 
   async delete(db, id) {
     this.setDataBase(db);
-    const user = await this.findOne(db, id);
-    const response = user.destroy();
+    const persona = await this.findOne(db, id);
+    const response = persona.destroy();
     return response;
   }
 }
 
-module.exports = UserService;
+module.exports = PersonaService;

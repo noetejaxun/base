@@ -1,19 +1,25 @@
 const { Sequelize } = require('sequelize');
-
-const { config } = require('../config/config');
+const { dataBases } = require('../config/config');
 const setupModels = require('../db/models');
 
-const USER      = encodeURIComponent(config.dbUser);
-const PASSWORD  = encodeURIComponent(config.dbPassword);
-const URI       = `${config.dbManage}://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
+let db = { db: null};
 
-const sequelize = new Sequelize(URI, {
-    dialect: `${config.dbManage}`,
-    logging: true
+dataBases.forEach((config, index) => {
+    const USER      = encodeURIComponent(config.dbUser);
+    const PASSWORD  = encodeURIComponent(config.dbPassword);
+    const URI       = `${config.dbDialect}://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
+    
+    db[`db${index + 1}`] = new Sequelize(URI, {
+        dialect: `${config.dbDialect}`,
+        logging: true
+    });
+
+    setupModels(db[`db${index + 1}`]);
+
+    db[`db${index + 1}`].sync({ force: true });
+
+    db.db = db[`db${index + 1}`];
+    
 });
 
-setupModels(sequelize);
-
-sequelize.sync();
-
-module.exports = sequelize;
+module.exports = db;
