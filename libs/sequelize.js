@@ -16,7 +16,7 @@ dataBases.forEach((config, index) => {
 
     setupModels(db[`db${index + 1}`]);
 
-    db[`db${index + 1}`].sync({ force: true });
+    db[`db${index + 1}`].sync();
 
     db.db = db[`db${index + 1}`];
     
