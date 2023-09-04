@@ -9,7 +9,7 @@ module.exports = {
       field: 'user_id',
       allowNull: false,
       type: DataTypes.INTEGER,
-      unique: true,
+      //unique: true,
     });
   },
 
